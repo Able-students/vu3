@@ -1,7 +1,7 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
 import Menu from './components/Menu.vue';
-const menuList = ['ABOUT','PROFILE','CONTACT']
+const menuList = [{name:'Home', path: '/'},{name: 'Counter', path: '/counter'},{name: 'CONTACTS', path: "/contacts"}]
 </script>
 
 <template>
