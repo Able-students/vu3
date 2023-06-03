@@ -13,6 +13,11 @@ const router = createRouter({
       path: '/contacts',
       name: 'contacts',
       component: () => import('../views/ContactsView.vue')
+    },
+    {
+      path: '/gpt',
+      name: 'GPT',
+      component: () => import('../views/ChatGPT.vue')
     }
   ]
 })
