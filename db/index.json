@@ -1,40 +1,10 @@
 {
   "contacts": [
     {
-      "name": "dew",
-      "phone": "323",
-      "address": "ffvf",
-      "id": 2
-    },
-    {
-      "name": "ded",
-      "phone": "3232",
-      "address": "e3r",
-      "id": 3
-    },
-    {
-      "name": "new contatc",
-      "phone": "44452",
-      "address": "vrbt",
+      "name": "dasda",
+      "phone": "gasdfasd",
+      "address": "fasdasd",
       "id": 4
-    },
-    {
-      "name": "fer",
-      "phone": "fer",
-      "address": "fer",
-      "id": 5
-    },
-    {
-      "name": "",
-      "phone": "",
-      "address": "",
-      "id": 6
-    },
-    {
-      "name": "dana",
-      "phone": "43",
-      "address": "4fr",
-      "id": 7
     }
   ]
 }

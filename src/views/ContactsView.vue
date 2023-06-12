@@ -1,17 +1,32 @@
 <template>
-   <div class="contacts">
-        <h4>My contacts</h4>
-        <button @click="openModal = true">Add contact</button>
-        <AddContact v-show="openModal" @closeModal="openModal = false"/>
-        <input placeholder="Search contact" />
-        <ol>
-            <li v-for="item in contacts" class="contact-card">
+   <main class="contacts">
+        <h2 class="title">My contacts</h2>
+        <div class="top">
+            <input placeholder="Search contact" />
+            <button @click="openModal = true">Add contact +</button>
+        </div>
+        <transition name="modal">
+            <AddContact v-show="openModal" @closeModal="openModal = false" />
+        </transition> 
+        <ol @click="e => userId(e.target)" class="list">
+            <li v-for="item in contacts" class="contact-card" :data-id='item.id' >
                 <h3>Name: {{ item.name }}</h3>
                 <p>Phone number: {{ item.phone }}</p>
                 <p>Address: {{ item.address }}</p>
             </li>
         </ol>
-   </div>
+        <transition name="modal">
+           <div class="modal-variant" v-if="variant">
+                <div class="modal-inner">
+                    <h3 class="title">Edit and delete user</h3>
+                    <button class="btn" @click="userDel">Delete</button>
+                    <button class="btn">Edit</button>
+                    <button class="close" @click="closeVariant">x</button>
+                </div>
+                <div class="overlay" @click="closeVariant"></div>
+            </div>  
+        </transition>
+   </main>
 </template>
 
 <script>
@@ -23,22 +38,134 @@ export default {
     components: { AddContact },
     setup(props, {emit}){
         const openModal = ref(false)
+        const variant = ref(false)
         const store = useStore()
         const contacts = computed(() => store.state.contactModule.contacts)
-        console.log(contacts);
+        const id = ref('');
+        function userId(e) {
+            let li = e.closest('li'); 
+            if(li){
+                id.value = li.dataset.id; 
+                variant.value = true;
+            }  
+        }
+        function closeVariant(){
+            variant.value = false;
+        }
+        function userDel() {
+            if(id.value.length){
+                store.dispatch('deleteContacts',id.value)
+                id.value = '' 
+                closeVariant()
+            }
+        }
         onMounted(() => {
             store.dispatch('getContacts')
         })
         return {
+            userId,
+            userDel,
+            closeVariant,
             openModal,
-            contacts
+            variant,
+            contacts,
+            id
         }
     }
 }
 </script>
 
 <style scoped>
+.contacts{
+    padding: 20px; 
+
+}
+.modal-variant{
+    position: fixed;
+    top: 0;
+    left: 0;
+    right:0; 
+    bottom: 0;
+}
+
+.modal-inner{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    padding: 20px;
+    border: 1px solid;
+    z-index: 20;
+    background-color: #fff;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 20px 15px;
+}
+.modal-inner h3{
+    grid-column: 1/3;
+}
+.overlay{
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #8181814d;
+    z-index: 10;
+}
+.close{
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+.top{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: cadetblue;
+    margin: 0 -20px;
+}
+.top *{
+    padding: 8px 15px;
+    border-radius: 10px;
+    border: none;
+    outline: transparent;
+    cursor: pointer;
+    font-size: 18px;
+}
+.top button{
+    background-color: bisque;
+
+}
+.list{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px,220px));
+    list-style: none;
+    grid-gap: 20px;
+    padding: 0;
+    margin: 20px 0;
+}
 .contact-card{
+    border: 1px solid green;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+.modal-enter-active{
+    transition: all 0.8s ease-in-out;
+}
+.modal-leave-active{
+    transition: all 0.3s ease-out;
+}
+
+.modal-enter-from,
+.modal-leave-to{
+    opacity: 0;
+}
+.title{
+    text-align: center;
     margin: 20px;
 }
 </style>

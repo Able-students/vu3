@@ -1,13 +1,13 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
 import Menu from './components/Menu.vue';
-const menuList = [{name:'Home', path: '/'},{name: 'Counter', path: '/counter'},{name: 'CONTACTS', path: "/contacts"}]
+const menuList = [{name:'Home', path: '/'},{name: 'Counter', path: '/counter'},{name: 'Contacts', path: "/contacts"}]
 </script>
 
 <template>
   <header>
     <p>Logo</p>
-    <Menu :data="menuList" num="3"/>
+    <Menu :data="menuList" num="3" />
   </header>
   <RouterView />
 </template>
