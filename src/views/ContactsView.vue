@@ -2,11 +2,11 @@
    <main class="contacts">
         <h2 class="title">My contacts</h2>
         <div class="top">
-            <input placeholder="Search contact" />
+            <input placeholder="Search contact" v-model="searchText"/>
             <button @click="openModal = true">Add contact +</button>
         </div>
         <transition name="modal">
-            <AddContact v-show="openModal" @closeModal="openModal = false" />
+            <AddContact v-show="openModal" :contact="editedContact" @closeModal="closeModal" />
         </transition> 
         <ol @click="e => userId(e.target)" class="list">
             <li v-for="item in contacts" class="contact-card" :data-id='item.id' >
@@ -20,7 +20,7 @@
                 <div class="modal-inner">
                     <h3 class="title">Edit and delete user</h3>
                     <button class="btn" @click="userDel">Delete</button>
-                    <button class="btn">Edit</button>
+                    <button class="btn" @click="userEdit">Edit</button>
                     <button class="close" @click="closeVariant">x</button>
                 </div>
                 <div class="overlay" @click="closeVariant"></div>
@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, reactive, watch, watchEffect } from 'vue'
 import { useStore } from 'vuex';
 import AddContact from '../components/AddContact.vue'
 export default {
@@ -39,8 +39,12 @@ export default {
     setup(props, {emit}){
         const openModal = ref(false)
         const variant = ref(false)
+        const editedContact = ref({})
         const store = useStore()
-        const contacts = computed(() => store.state.contactModule.contacts)
+        const searchText = ref('')
+        const myStoredValue = reactive(localStorage.getItem('contact'))
+        const contacts = ref(store.state.contactModule.contacts)
+       
         const id = ref('');
         function userId(e) {
             let li = e.closest('li'); 
@@ -59,9 +63,33 @@ export default {
                 closeVariant()
             }
         }
+        function userEdit(){
+            closeVariant()
+            openModal.value = true
+            console.log(id.value);
+            editedContact.value = contacts.value.find(elem => elem.id === +id.value)
+            localStorage.setItem("contact", JSON.stringify( editedContact.value));
+            console.log(editedContact.value);
+        }
+        function closeModal(){
+            openModal.value = false
+            editedContact.value = {}
+        }
+        watch(searchText, (n) => {
+            console.log(myStoredValue.value,'--myStoredValue');    
+            store.dispatch('searchContacts', searchText.value)
+        })
+    
         onMounted(() => {
             store.dispatch('getContacts')
+            // window.addEventListener('storage', (event) => {
+            //     console.log(event,'--event');
+            //     if (event.key === 'contact') {
+            //         myStoredValue.value = event.newValue;
+            //     }
+            // })
         })
+       
         return {
             userId,
             userDel,
@@ -69,6 +97,10 @@ export default {
             openModal,
             variant,
             contacts,
+            userEdit,
+            closeModal,
+            editedContact,
+            searchText,
             id
         }
     }

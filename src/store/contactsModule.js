@@ -16,10 +16,24 @@ export default {
                 commit('setContacts', data)
             })
         },
+        searchContacts({ commit }, query) {
+            fetch('http://localhost:3000/contacts?q=' + query).then(res => res.json()).then(data => {
+                commit('setContacts', data)
+            })
+        },
         addContacts({ dispatch }, data) {
             fetch('http://localhost:3000/contacts', {
                 method: 'post', body: JSON.stringify(data), headers: {
                     "Content-Type": "application/json",
+                },
+            }).then(res => res.json()).then(data => {
+                dispatch('getContacts')
+            })
+        },
+        editContact({ dispatch }, data) {
+            fetch('http://localhost:3000/contacts/' + data.id, {
+                method: 'PATCH', body: JSON.stringify(data), headers: {
+                    'Content-type': 'application/json',
                 },
             }).then(res => res.json()).then(data => {
                 dispatch('getContacts')
