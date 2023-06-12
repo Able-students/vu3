@@ -6,7 +6,7 @@
 </template>
 <script setup>
 import { useRouter, useRoute } from 'vue-router';
-import { computed, ref } from 'vue'
+import { computed, ref} from 'vue'
    const props = defineProps({
     data: {
         type: Array,
@@ -19,7 +19,7 @@ import { computed, ref } from 'vue'
    const router = useRouter();
    const route=useRoute();
    const path = computed(() =>route.path)
-   console.log(path.value);
+
    const menuList = ref(props.data)
    const powerNum = computed(() => props.num ** props.num)
 </script>
