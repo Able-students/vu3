@@ -15,9 +15,15 @@ const router = createRouter({
       component: () => import('../views/ContactsView.vue')
     },
     {
+
       path: '/counter',
       name: 'counter',
       component: () => import('../views/CounterView.vue')
+    },
+    {
+      path: '/gpt',
+      name: 'GPT',
+      component: () => import('../views/ChatGPT.vue')
     }
   ]
 })
