@@ -10,21 +10,39 @@
 </template>
 
 <script setup>
-import { ref, watch, computed, onMounted } from 'vue';
+import { ref, watch, isRef, computed, onMounted, reactive, readonly, isReactive, isReadonly, markRaw, toRaw } from 'vue';
 import { useStore } from 'vuex';
 const count = ref(0);
+
+// let name = markRaw('able')
+
+const user = ref({
+  name: 'able', surname: 'jsjs'
+})
+
+const user1 = readonly({
+  name: 'able', surname: 'jsjs'
+})
+
+console.log(toRaw(count), 'toRaw(count)')
+
+user.value.name = 'gfeirfg'
+user.value.surname = "fheioh"
+console.log(user.value.name);
+console.log(isReactive(user),'--isReactive(user)');
+console.log(isReadonly(user),'--isReadonly(user)');
+
 const emit = defineEmits();
 const store = useStore();
 const count1 = computed(() => store.state.countModule.count);
 const list = computed(() => store.state.calcModule.list);
 const coinList = ['0xbtc','usdt']
+
+
 const increment = () => {
   count.value = count.value + 1
   store.commit('countModule/increaseCount')
-  console.log(store.getters['countModule/getCount'],'--1')
-  console.log(store.getters['calcModule/getCount'],'--2')
   store.dispatch('countModule/setCountAndGet', 999999)
-  console.log(count1.value, store.state.countModule.count, '--count1')
 }
 
 onMounted(() => {

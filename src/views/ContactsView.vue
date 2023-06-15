@@ -66,6 +66,9 @@ export default {
                 closeVariant()
             }
         }
+        function closeModal(){
+            
+        }
         function userEdit(){
             closeVariant()
             openModal.value = true

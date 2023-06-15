@@ -3,20 +3,21 @@
         <nav>
             <span v-for="item in data" @click="router.push(item.path)" :class="item.path === path ? 'active' : ''">{{item.name}}</span>
         </nav>
-        <AuthModal/> 
+        <Auth/> 
     </div>
 </template>
 <script setup>
 import { useRouter, useRoute } from 'vue-router';
-import { computed, ref} from 'vue'
-import AuthModal from './auth.vue'
+import { computed, ref, defineComponent } from 'vue'
+import Auth from './auth.vue'
    const props = defineProps({
     data: {
         type: Array,
         default: []
     }
    })
-//    components: {AuthModal}
+   defineComponent([Auth])
+
    const router = useRouter();
    const route=useRoute();
    const path = computed(() =>route.path)

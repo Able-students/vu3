@@ -1,7 +1,23 @@
 {
-  "contacts": [
-   
-  ],
+  "contacts": [],
   "users": [
-    ]
+    {
+      "user": "diana",
+      "email": "di@gmail.com",
+      "password": "MTIzNDU=",
+      "id": "19d619c763"
+    },
+    {
+      "user": "fheoiw",
+      "email": "aa@gg.g",
+      "password": "MTIzNDU=",
+      "id": {}
+    },
+    {
+      "user": "aa",
+      "email": "aa@dd.a",
+      "password": "cXE=",
+      "id": "1884192965"
+    }
+  ]
 }
