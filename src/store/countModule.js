@@ -2,7 +2,7 @@ export default {
     namespaced: true,
     state: {
         count: 10000,
-        text: 'hello world'
+        text: localStorage.getItem('text') || "some text"
     },
     mutations: {
         increaseCount(state){

@@ -7,7 +7,9 @@
         </div>
         
         <transition name="modal">
-            <AddContact v-show="openModal" :contact="editedContact" @closeModal="openModal = false" />
+
+            <AddContact v-show="openModal" :contact="editedContact" @closeModal="closeModal" />
+
         </transition> 
         <ol @click="e => userId(e.target)" class="list">
             <li v-for="item in contacts" class="contact-card" :data-id='item.id' >
@@ -32,6 +34,7 @@
 
 <script>
 import { ref, onMounted, watch, computed } from 'vue'
+
 import { useStore } from 'vuex';
 import AddContact from '../components/AddContact.vue'
 export default {
@@ -42,9 +45,9 @@ export default {
         const variant = ref(false)
         const editedContact = ref({})
         const store = useStore()
-
         const searchText = ref('')
         const contacts = computed(()=>store.state.contactModule.contacts)
+
         const id = ref('');
         function userId(e) {
             let li = e.closest('li'); 
@@ -67,20 +70,7 @@ export default {
             closeVariant()
             openModal.value = true
             console.log(id.value);
-            editedContact.value = contacts.value.find(elem=>elem.id=== +id.value)
-            console.log(editedContact.value);
         }
-        function closeModal(){
-            openModal.value = false
-            editedContact.value = {}
-        }
-
-        onMounted(() => {
-            store.dispatch('getContacts')
-        })
-        watch(searchText, text=>{
-            store.dispatch('searchContacts', text)
-        })
         return {
             userId,
             userDel,

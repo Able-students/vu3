@@ -11,8 +11,9 @@
                     </transition>
                 </div>
                 <button @click="addContact">{{ flag ? 'Save' : 'Add' }}</button>
-                <img 
-                src="../assets/close.svg" alt=" close icon" @click="closeAll">
+
+                <img src="https://www.iconarchive.com/download/i45224/kyo-tux/delikate/Close.ico" alt=" close icon" @click="closeAll">
+
             </div>
         </div>
         <div class="overlay" @click="closeAll"></div>
@@ -29,8 +30,8 @@
             type: Object,
             default: {}
         },
-     },
-     setup(props, { emit }){
+},
+     setup(props,{ emit }){
         let error = ref(false)
         const name = ref('')
         const phone = ref('')
@@ -46,13 +47,18 @@
                     address: address.value,
                     id: id.value
                 }
+            
+                // var x = window.open("", "myWindow", "width=200,height=100");
+                // x.localStorage.setItem("contact", JSON.stringify(data));
+                // x.close();
+               
+              
                 // console.log(data);
                 if(flag.value){
                     store.dispatch('editContact',data)
                 }else{
                     store.dispatch('addContacts',data)
                 }
-
                 closeAll()
             }else{
                 error.value =  true;
@@ -66,12 +72,12 @@
             error.value = false
             flag.value = false
         }
-        watch(()=>props.contact,()=>{
-            name.value = props.contact?.name
+        watch(() => props.contact, () => {
+            name.value = props.contact?.name 
             phone.value = props.contact?.phone
-            address.value = props.contact?.address
+            address.value = props.contact?.address 
             id.value = props.contact?.id
-            if(props.contact?.name){
+            if( props.contact?.name ){
                 flag.value = true
             }
         })

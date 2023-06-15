@@ -1,69 +1,7 @@
 {
   "contacts": [
-    {
-      "name": "Arman",
-      "phone": "11122233",
-      "address": "aassdda",
-      "id": 1
-    },
-    {
-      "name": "asd",
-      "phone": "fasda",
-      "address": "fasda",
-      "id": 2
-    },
-    {
-      "name": "qsd",
-      "phone": "asd",
-      "address": "fasda",
-      "id": 3
-    },
-    {
-      "name": "aqsd",
-      "phone": "fasdas",
-      "address": "fasda",
-      "id": 4
-    }
+   
   ],
   "users": [
-    {
-      "user": "Arman",
-      "email": "ar@mail.ru",
-      "password": "12345",
-      "id": 1
-    },
-    {
-      "email": "ar1@mail.ru",
-      "password": "12345",
-      "id": {}
-    },
-    {
-      "email": "ar2@mail.ru",
-      "password": "12345",
-      "id": 2
-    },
-    {
-      "email": "ar5@mail.ru",
-      "password": "12345",
-      "id": "2a995bbcdb"
-    },
-    {
-      "user": "Ar2",
-      "email": "a@a.ru",
-      "password": "MTIz",
-      "id": "173c1860e3"
-    },
-    {
-      "user": "Ar3",
-      "email": "ar3@mail.ru",
-      "password": "MTIzNDU=",
-      "id": "4ad434d42d"
-    },
-    {
-      "user": "asdas",
-      "email": "ar4@mail.ru",
-      "password": "MTIzNDU=",
-      "id": "ddb51172d6"
-    }
-  ]
+    ]
 }
