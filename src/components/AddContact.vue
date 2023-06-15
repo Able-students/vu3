@@ -10,8 +10,9 @@
                         <p v-if="error">Plese enter name and phone</p>
                     </transition>
                 </div>
-                <button @click="addContact">Add</button>
-                <img src="https://www.iconarchive.com/download/i45224/kyo-tux/delikate/Close.ico" alt=" close icon" @click="closeAll">
+                <button @click="addContact">{{ flag ? 'Save' : 'Add' }}</button>
+                <img 
+                src="../assets/close.svg" alt=" close icon" @click="closeAll">
             </div>
         </div>
         <div class="overlay" @click="closeAll"></div>
@@ -19,26 +20,39 @@
  </template>
  
  <script>
- import { ref } from 'vue';
+ import { ref, watch } from 'vue';
  import { useStore } from 'vuex';
  export default {
      name: 'AddContact',
+     props: {
+        contact: {
+            type: Object,
+            default: {}
+        },
+     },
      setup(props, { emit }){
         let error = ref(false)
         const name = ref('')
         const phone = ref('')
         const address = ref('')
+        const id = ref()
         const store = useStore()
-        
+        const flag = ref(false)
         function addContact(){
             if(name.value.length && phone.value.length){
                 let data = {
                     name: name.value,
                     phone: phone.value,
-                    address: address.value
+                    address: address.value,
+                    id: id.value
                 }
                 // console.log(data);
-                store.dispatch('addContacts',data)
+                if(flag.value){
+                    store.dispatch('editContact',data)
+                }else{
+                    store.dispatch('addContacts',data)
+                }
+
                 closeAll()
             }else{
                 error.value =  true;
@@ -50,11 +64,22 @@
             phone.value=''
             address.value=''
             error.value = false
+            flag.value = false
         }
+        watch(()=>props.contact,()=>{
+            name.value = props.contact?.name
+            phone.value = props.contact?.phone
+            address.value = props.contact?.address
+            id.value = props.contact?.id
+            if(props.contact?.name){
+                flag.value = true
+            }
+        })
          return {
             addContact,
             closeAll,
             name,
+            flag,
             phone,
             address,
             error
@@ -88,6 +113,7 @@
     background-color: aliceblue;
     padding: 40px 30px;
     width: 20%;
+    min-width: 280px;
     z-index: 2;
 }
 
