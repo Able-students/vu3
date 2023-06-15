@@ -11,7 +11,9 @@
                     </transition>
                 </div>
                 <button @click="addContact">{{ flag ? 'Save' : 'Add' }}</button>
+
                 <img src="https://www.iconarchive.com/download/i45224/kyo-tux/delikate/Close.ico" alt=" close icon" @click="closeAll">
+
             </div>
         </div>
         <div class="overlay" @click="closeAll"></div>
@@ -28,7 +30,7 @@
             type: Object,
             default: {}
         },
-    },
+},
      setup(props,{ emit }){
         let error = ref(false)
         const name = ref('')
@@ -57,7 +59,6 @@
                 }else{
                     store.dispatch('addContacts',data)
                 }
-               
                 closeAll()
             }else{
                 error.value =  true;
@@ -118,6 +119,7 @@
     background-color: aliceblue;
     padding: 40px 30px;
     width: 20%;
+    min-width: 280px;
     z-index: 2;
 }
 

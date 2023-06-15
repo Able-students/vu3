@@ -5,8 +5,11 @@
             <input placeholder="Search contact" v-model="searchText"/>
             <button @click="openModal = true">Add contact +</button>
         </div>
+        
         <transition name="modal">
+
             <AddContact v-show="openModal" :contact="editedContact" @closeModal="closeModal" />
+
         </transition> 
         <ol @click="e => userId(e.target)" class="list">
             <li v-for="item in contacts" class="contact-card" :data-id='item.id' >
@@ -30,7 +33,8 @@
 </template>
 
 <script>
-import { ref, onMounted, reactive, watch, watchEffect } from 'vue'
+import { ref, onMounted, watch, computed } from 'vue'
+
 import { useStore } from 'vuex';
 import AddContact from '../components/AddContact.vue'
 export default {
@@ -42,9 +46,8 @@ export default {
         const editedContact = ref({})
         const store = useStore()
         const searchText = ref('')
-        const myStoredValue = reactive(localStorage.getItem('contact'))
-        const contacts = ref(store.state.contactModule.contacts)
-       
+        const contacts = computed(()=>store.state.contactModule.contacts)
+
         const id = ref('');
         function userId(e) {
             let li = e.closest('li'); 
@@ -67,29 +70,7 @@ export default {
             closeVariant()
             openModal.value = true
             console.log(id.value);
-            editedContact.value = contacts.value.find(elem => elem.id === +id.value)
-            localStorage.setItem("contact", JSON.stringify( editedContact.value));
-            console.log(editedContact.value);
         }
-        function closeModal(){
-            openModal.value = false
-            editedContact.value = {}
-        }
-        watch(searchText, (n) => {
-            console.log(myStoredValue.value,'--myStoredValue');    
-            store.dispatch('searchContacts', searchText.value)
-        })
-    
-        onMounted(() => {
-            store.dispatch('getContacts')
-            // window.addEventListener('storage', (event) => {
-            //     console.log(event,'--event');
-            //     if (event.key === 'contact') {
-            //         myStoredValue.value = event.newValue;
-            //     }
-            // })
-        })
-       
         return {
             userId,
             userDel,
