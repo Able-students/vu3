@@ -26,8 +26,8 @@
 </template>
 
 <script>
-import Menu from './Menu.vue';
-import { ref, onMounted, onUpdated } from 'vue';
+// import Menu from './Menu.vue';
+import { ref, onMounted, onUpdated, inject } from 'vue';
 export default {
     name: 'Calculator',
     // props: ['count']
@@ -39,18 +39,22 @@ export default {
         }
     },
     emits: ['printResult'],
-    components: [Menu],
+  //  components: [Menu],
     setup(props) {
         const number1 = ref(0)
         const h3 = ref()
         const operand = ref(null)
         const result = ref(0)
-        onMounted(() => {
-            console.log('DOM is mounted')
-        })
-        onUpdated(() => {
-           console.log('DOM is onUpdated') 
-        })
+
+        const test = inject('testInfo', 'default');
+        //console.log(test,'--test 1');
+
+        // onMounted(() => {
+        //     console.log('DOM is mounted')
+        // })
+        // onUpdated(() => {
+        //    console.log('DOM is onUpdated') 
+        // })
         const appendNumber = (e) => {
             if(result.value.toString().length > 18){
                 h3.value.style.fontSize = '18px'

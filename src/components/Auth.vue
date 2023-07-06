@@ -8,24 +8,34 @@
             <button class="btn" @click="logout" v-else>Logout</button>
         </div>
 
-        <AuthModal type="login" v-if="loginModal" @close="closeAll" />
+        <AuthModal type="login" name="able" v-if="loginModal" @close="closeAll" />
         <AuthModal type="register" v-if="registerModal" @close="closeAll" />
-
+        <Options />
     </div>
 </template>
 
 <script>
 import AuthModal from './AuthModal.vue'
-import { ref, onMounted, computed } from 'vue'
-    import {useStore} from 'vuex';
+import { ref, onMounted, computed, provide } from 'vue'
+import {useStore} from 'vuex';
+import { useTestData } from './hooks.js'
+
     export default{
         name: 'Auth',
         components: { AuthModal },
-        setup(){
+
+        setup(){        
+            const { data, printText } = useTestData()
+            console.log(data,'--data');
+            printText('Test data info')
+            
             const store = useStore();
             const person = computed(()=>store.getters.getPerson)
             const loginModal = ref(false)
             const registerModal = ref(false)
+            const able = ref('')
+            provide('testInfo', {test: 'able'})
+            provide('testInfo2', {test: 'able2'})
 
             function logout(){
                 store.commit('setPerson')
@@ -59,6 +69,7 @@ import { ref, onMounted, computed } from 'vue'
                 closeAll,
                 loginModal,
                 registerModal,
+                able
             }    
         }
     }

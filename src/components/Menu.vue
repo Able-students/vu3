@@ -10,6 +10,7 @@
 import { useRouter, useRoute } from 'vue-router';
 import { computed, ref, defineComponent } from 'vue'
 import Auth from './auth.vue'
+
    const props = defineProps({
     data: {
         type: Array,

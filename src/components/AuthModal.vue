@@ -2,6 +2,7 @@
        <div class="register-modal" >
             <div class="login-form">
                 <input placeholder="Enter name" v-if="type === 'register'" v-model="user" type="text"/>
+
                 <input placeholder="Enter email*" v-model="email" type="email"/>
                 <input placeholder="Enter pssword*" v-model="password" type="password"/>
                 <div class="add-error">
@@ -12,108 +13,121 @@
                 <button @click="type === 'login' ? login() : register() ">{{ type }}</button>
                 <img src="../assets/close.svg" alt=" close icon" @click="closeAll">
             </div>
+            <Calculator name="name" />
             <div class="overlay" @click="closeAll"></div>
         </div>
 </template>
 
 <script>
-import { ref, computed, watch } from 'vue'
-import {useStore} from 'vuex';
+import Calculator from './Calculator.vue';
+import { ref, computed, watch, inject } from 'vue'
+import { useStore } from 'vuex';
+import { useTestData } from './hooks.js'
+
     export default{
-        name: 'AuthModal',
-        emits: ['close'],
-        props: {
-            type: '',
-            required: true
-        },
-        setup(props, {emit}){
-            const type = props.type
-            const store = useStore();
-            const person = computed(()=>store.getters.getPerson)
-            const filt = computed(()=>store.state.authModule.users)
-            const error = ref(false);
-            const user = ref('')
-            const email = ref('');
-            const password = ref('')
-            let text = ref('')
-
-            function login(){  
-                if(email.value.length && password.value.length){
-                    const data = {
-                        email: email.value,
-                        password: btoa(password.value) 
-                    }
-                    store.dispatch('loginUser',data)
-                }else{
-                    error.value =  true;
-                    text.value = 'please enter email and pass'
-                }
-            }
-
-            function register(){
-                if(email.value.length && password.value.length){
-                    console.log(filt.value.find(el=>el.email === email.value));
-                    if(filt.value.find(el=>el.email === email.value)){
-                        error.value = true
-                        text.value = 'Email error'
-                    }else{
-                        const data = {
-                            user: user.value,
-                            email: email.value,
-                            password: btoa(password.value),
-                        }  
-                        store.dispatch('registerUser',data)
-                        closeAll() 
-                    }
-                }else{
-                    error.value =  true;
-                    text.value = 'enter email and pass'
-                }
-            }
-
-            function closeAll(){
-                emit('close')
-                error.value = false;
-                user.value = '';
-                email.value = '';
-                password.value = '';
-                text.value = '';
-                if(error.value){
-                    console.log('+');
-                    store.commit('setPerson',{})
-                }
-            }
-
-            watch(person, n=>{
-                if(n == 'error'){
-                    error.value = true;
-                    text.value = 'error password'
-                }
-                if(n == 'noemail'){
-                    error.value = true;
-                    text.value = 'email not found' 
-                }
-                if(typeof n == 'object'){
-                    closeAll()
-                }          
-            })
-    
-            return {
-                type,
-                person,
-                login,
-                register,
-                closeAll,
-                user,
-                email,
-                password,
-                error,
-                text,
-                filt
-                // selected
-            }    
+    name: "AuthModal",
+    emits: ["close"],
+    props: {
+        name: {
+            type: String,
+            default: ''
         }
-    }
+    },
+    components: [Calculator],
+    setup(props, { emit }) {
+        const type = props.type;
+        const store = useStore();
+        const { data, printText } = useTestData()
+        printText('AuthModal printText')
+
+        const person = computed(() => store.getters.getPerson);
+        const filt = computed(() => store.state.authModule.users);
+        const error = ref(false);
+        const user = ref("");
+        const email = ref("");
+        const password = ref("");
+
+        const test = inject('testInfo2', 0);
+       // console.log(test,'--test');
+
+        let text = ref("");
+        function login() {
+            if (email.value.length && password.value.length) {
+                const data = {
+                    email: email.value,
+                    password: btoa(password.value)
+                };
+                store.dispatch("loginUser", data);
+            }
+            else {
+                error.value = true;
+                text.value = "please enter email and pass";
+            }
+        }
+        function register() {
+            if (email.value.length && password.value.length) {
+                console.log(filt.value.find(el => el.email === email.value));
+                if (filt.value.find(el => el.email === email.value)) {
+                    error.value = true;
+                    text.value = "Email error";
+                }
+                else {
+                    const data = {
+                        user: user.value,
+                        email: email.value,
+                        password: btoa(password.value),
+                    };
+                    store.dispatch("registerUser", data);
+                    closeAll();
+                }
+            }
+            else {
+                error.value = true;
+                text.value = "enter email and pass";
+            }
+        }
+        function closeAll() {
+            emit("close");
+            error.value = false;
+            user.value = "";
+            email.value = "";
+            password.value = "";
+            text.value = "";
+            if (error.value) {
+                console.log("+");
+                store.commit("setPerson", {});
+            }
+        }
+        watch(person, n => {
+            if (n == "error") {
+                error.value = true;
+                text.value = "error password";
+            }
+            if (n == "noemail") {
+                error.value = true;
+                text.value = "email not found";
+            }
+            if (typeof n == "object") {
+                closeAll();
+            }
+        });
+        return {
+            type,
+            person,
+            login,
+            register,
+            closeAll,
+            user,
+            email,
+            password,
+            error,
+            text,
+            filt
+            // selected
+        };
+    },
+    components: { Calculator }
+}
 </script>
 
 
