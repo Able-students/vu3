@@ -20,6 +20,12 @@ const router = createRouter({
       name: 'counter',
       component: () => import('../views/CounterView.vue')
     },
+    {
+
+      path: '/qr',
+      name: 'qr',
+      component: () => import('../views/QRView.vue')
+    },
   ]
 })
 

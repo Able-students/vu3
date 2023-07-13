@@ -22,9 +22,9 @@
 import Calculator from './Calculator.vue';
 import { ref, computed, watch, inject } from 'vue'
 import { useStore } from 'vuex';
-import { useTestData } from './hooks.js'
+import { useTestData } from '../hooks/hooks.js'
 
-    export default{
+export default{
     name: "AuthModal",
     emits: ["close"],
     props: {
@@ -66,7 +66,7 @@ import { useTestData } from './hooks.js'
         }
         function register() {
             if (email.value.length && password.value.length) {
-                console.log(filt.value.find(el => el.email === email.value));
+             
                 if (filt.value.find(el => el.email === email.value)) {
                     error.value = true;
                     text.value = "Email error";
@@ -94,7 +94,6 @@ import { useTestData } from './hooks.js'
             password.value = "";
             text.value = "";
             if (error.value) {
-                console.log("+");
                 store.commit("setPerson", {});
             }
         }

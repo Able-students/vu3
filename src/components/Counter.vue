@@ -4,9 +4,9 @@
   <h4>{{ count1 }}</h4>
   <button v-on:click="decrement">-1</button>
   <button @click="increment">+1</button>
-  <img v-for="elem in coinList" :src="`https://cdn.jsdelivr.net/gh/atomiclabs/cryptocurrency-icons@1a63530be6e374711a8554f31b17e4cb92c25fa5/128/color/${elem}.png`" />
-  <p v-for="elem in list">{{elem?.title}}</p>
   <hr />
+  <h2>Product list</h2>
+  <p v-for="elem in list">{{elem?.title}}</p>
 </template>
 
 <script setup>
@@ -54,10 +54,10 @@ const decrement = () => {
   emit('printResult', count.value, count.value );
 }
 
-watch(list, (newValue) => {
-  console.log(newValue, '---list')
-  console.log(list.value, '---list 2')
-})
+// watch(list, (newValue) => {
+//   console.log(newValue, '---list')
+//   console.log(list.value, '---list 2')
+// })
 
 
 </script>

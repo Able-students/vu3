@@ -6,8 +6,13 @@ import Calculator from '../components/Calculator.vue';
 
 <template>
   <main>
-    <h1>Calculator</h1>
+    <h2>Calculator</h2>
     <Calculator />
   </main>
 </template>
 
+<style>
+h2 {
+  margin: 20px 0;
+}
+</style>
